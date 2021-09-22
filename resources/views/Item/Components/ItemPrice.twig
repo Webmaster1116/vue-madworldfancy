@@ -1,0 +1,39 @@
+<script type="x/template" data-component="item-price">
+    <div :class="{ 'has-crossprice': hasCrossPrice }">
+        <div class="crossprice" v-if="showCrossPrice && hasCrossPrice">
+            <del class="text-muted small text-appearance">
+                ${ currentVariation.prices.rrp.unitPrice.formatted | itemCrossPrice }
+            </del>
+        </div>
+
+        <span class="price" style="margin-top:0.3em; font-size:30px">
+            <span>
+                <template v-if="showDynamicPrice">
+                    ${ $translate("Ceres::Template.dynamicVariationPrice",
+                        {
+                            price: $options.filters.currency(variationTotalPrice, currentVariation.prices.default.currency)
+                        }
+                    ) }
+                </template>
+
+                <template v-else>
+                    ${ variationTotalPrice | currency(currentVariation.prices.default.currency) }
+                </template>
+            </span>
+        </span>
+
+        <!-- class .is-single-piece is added for customers to hide the unit if it is C62 -->
+        <div class="base-price text-muted my-3"
+            v-if="currentVariation.unit"
+            :class="{ 'is-single-piece': currentVariation.unit && currentVariation.unit.content === 1 && currentVariation.unit.unitOfMeasurement === 'C62' }">
+
+            <div v-if="currentVariation.variation.mayShowUnitPrice">
+                ${ $translate("Ceres::Template.singleItemUnitPrice") }
+                <span class="base-price-value">
+                    ${ variationGraduatedPrice.basePrice | specialOffer(currentVariation.prices, "basePrice") }
+                </span>
+            </div>
+        </div>
+
+    </div>
+</script>

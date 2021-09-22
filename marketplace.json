@@ -1,0 +1,8 @@
+{
+    "marketplaceName"   : {"de":"MadWorld","en":"MadWorld"},
+    "license"           : "AGPL-3.0",
+    "price"             : 0.00,
+    "shortDescription"  : { "de": "MadWorld", "en": "MadWorld" },
+    "categories"        : ["3518"],
+    "keywords"          : ["plentymarkets", "plugins", "layout", "theme", "ceres"]
+}

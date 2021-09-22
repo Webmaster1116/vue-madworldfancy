@@ -1,0 +1,22 @@
+    <script type="x/template" data-component="item-filter">
+        <div v-if="facet.name" class="side-bar-filter-card">
+
+<div class="ftn-facette-1 pt-2" :data-pl-collapse="facetName" style="margin-left:15px">
+    ${facetName} <i class="pl-material pl-chevron-up"></i>
+</div>
+<div class="pl-collapsable pb-3" :data-pl-cl="facetName">
+    <div class="pt-3" v-if="facet.type === 'price'">
+        <item-filter-price template="#vue-item-filter-price-side"></item-filter-price>
+    </div>
+    <div v-else>
+        <div class="form-check" v-for="value in facets" :key="value.id">
+            <input :id="'option-' + value.id" class="form-check-input d-none" type="checkbox" :checked="isSelected(value.id)" @change="updateFacet(value)" :disabled="isLoading">
+            <label :for="'option-' + value.id" >
+                ${ value.name }
+            </label>
+            <div class="filter-badge">${ value.count }</div>
+        </div>
+    </div>
+</script>
+
+

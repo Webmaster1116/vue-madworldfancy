@@ -1,0 +1,8 @@
+<script type="x/template" data-component="add-to-wish-list">
+    <div class="icon-wishlist">
+<a class="btn btn-link btn-sm text-muted" @click.prevent="switchState()" data-toggle="tooltip" data-placement="top" ref="addToWishList"
+title="">
+<icon icon="heart" style="font-size:18px" class="default-float" :class="{'text-appearance text-danger': isVariationInWishList}" :loading="isLoading"></icon>
+</a>
+</div>
+</script>

@@ -1,0 +1,27 @@
+<script type="x/template" data-component="user-login-handler">
+<div class="position-relative">
+    <div class="dropdown" v-if="isLoggedIn"> 
+        <a href="#" class="dropdown-toggle nav-link" id="accountMenuList" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-boundary="window">
+            <i class="fas fa-user d-sm-none full-top-bar-icon" aria-hidden="true" style="padding:8px 0 0 4px"></i> 
+            <span class="d-none d-sm-inline">${ $translate("Ceres::Template.loginHello", {"username": username }) }</span>
+        </a>
+        <div class="dropdown-menu small m-0 p-0 mw-100">
+            <div class="list-group" aria-labelledby="accountMenuList" >
+                <a :href="$ceres.urls.myAccount" class="list-group-item small"><i class="fas fa-user full-top-bar-icon" style="padding:8px 0 0 4px"></i> ${ $translate("Ceres::Template.loginMyAccount") }</a>
+                <a href="#" class="list-group-item small" v-logout><i class="fa fa-sign-out full-top-bar-icon"></i> ${ $translate("Ceres::Template.loginLogout") }</a>
+            </div>
+        </div>
+    </div>
+    <div v-if="!isLoggedIn">
+        <a  :href="isLogin ? 'javascript:void(0)' : '#login'" :data-toggle="isLogin ? false : 'modal'" @click="createLoginModal(); unmarkInputFields();">
+            <i class="fas fa-user full-top-bar-icon" aria-hidden="true" style="padding:8px 0 0 4px"></i>
+            <span class="d-none d-sm-inline full-top-bar-txt">${ $translate("Ceres::Template.login") }</span>
+        </a>
+        <span class="pipe" style="padding:0 0 0 8px" v-if="showRegistration">|</span>
+        <a  :href="isRegister ? 'javascript:void(0)' : '#registration'" :data-toggle="isRegister ? false : 'modal'"  @click="createRegisterModal(); unmarkInputFields();" v-if="showRegistration">
+            <i class="fas fa-user-plus full-top-bar-icon" aria-hidden="true" style="padding:8px 0 0 4px"></i>
+            <span class="d-none d-sm-inline full-top-bar-txt">${ $translate("Ceres::Template.loginRegister") }</span>
+        </a>
+    </div>
+</div>
+</script>

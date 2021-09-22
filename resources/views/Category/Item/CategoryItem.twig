@@ -1,0 +1,306 @@
+{% extends getPartial('page-design') %}
+{% import "Ceres::PageDesign.Macros.LayoutContainer" as LayoutContainer %}
+{% import "Ceres::Category.Macros.CategoryTree" as Tree %}
+
+{% set categoryDescriptionTop = ceresConfig.item.showCategoryDescriptionTop %}
+
+{% set overrideSearchFilters = LayoutContainer.show("Ceres::Search.Filter", facets ) %}
+
+{% block PageBody %}
+
+    {% set listType = isSearch ? "itemsearch" : "categoryitem" %}
+    {% set shopBuilderTemplate = shop_builder_category_template(category.id, listType) %}
+
+    {% if shopBuilderTemplate | trim is not empty or isShopBuilder %}
+
+        <div class="categoriegrid pt-0 page-content container-max">
+            <div class="row">
+                <div class="col-12">
+                    {{ shopBuilderTemplate | raw }}
+                </div>
+            </div>
+        </div>  
+ 
+    {% else %}
+
+
+
+        
+        <div class="container">
+        <div class="parallax-img-container">
+            <lazy-img class="parallax-img-container-inner"
+                {% if category.details[0].imagePath is not empty %}image-url="/documents/{{ category.details[0].imagePath }}"{% endif %}
+                :is-background-image="true">
+                <div class="container-max">
+                    <div>
+                        <div class="parallax-text-container" style="padding:3em 0 2em 0">
+                            <h1 class="kat-titel">{{ category.details[0].name | raw }}</h1>
+                            {% if categoryDescriptionTop == "description1" or categoryDescriptionTop == "both" %}
+                                <div class="category-description mb-3">{{ category.details[0].description | raw }}</div>
+                            {% endif %}
+                            {% if categoryDescriptionTop == "description2" or categoryDescriptionTop == "both" %}
+                                <div class="category-description mb-3">{{ category.details[0].description2 | raw }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </lazy-img>
+        </div>
+        </div>
+
+        <div class="categoriegrid page-content container-max">
+
+            {% if isSearch %}
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h1 class="h2">
+                            {% if isTag %}
+                                {{ trans("Ceres::Template.tagSearchResults", {"searchString": searchString}) }}
+                            {% else %}
+                                {{ trans("Ceres::Template.itemSearchResults") }} {{ searchString }}
+                            {% endif %}
+                        </h1>
+                    </div>
+                </div>
+            {% endif %} 
+
+            {% if category is defined and not ceresConfig.item.showCategoryImage %}
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h1 class="h2 category-title">{{ category.details[0].name }}</h1>
+                        {% if ceresConfig.item.showCategoryDescriptionTop in ["description1", "both"] and category.details[0].description | trim is not empty %}
+                            <div class="category-description mb-3">{{ category.details[0].description | raw }}</div>
+                        {% endif %}
+                        {% if ceresConfig.item.showCategoryDescriptionTop in ["description2", "both"] and category.details[0].description2 | trim is not empty %}
+                            <div class="category-description mb-3">{{ category.details[0].description2 | raw }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+           
+
+            <div class="row">
+
+
+                <div class="col-3 d-none d-lg-block">
+
+
+                        <div class="sidebar-categories">
+                            <div class="category-title">Categories</div>
+                            <hr class="hr-line m_bottom_15">
+                            {{ include('Ceres::PageDesign.Partials.Header.SideNavigation.twig') }}
+                        </div>
+
+
+
+                        <p class="ftn-facette-headline">Filter</p>
+                        <hr class="hr-line m_bottom_25">
+                        <item-filter-list></item-filter-list>
+                        <item-filter-tag-list></item-filter-tag-list>
+
+
+
+
+                        <div class="katbox-container scale_image_container mt-5">
+                            <a href="/masks/" class="katbox">
+
+                                <div class="katbox-image">
+                                    <img src="https://cdn02.plentymarkets.com/kz24s2gfphm4/frontend/madworld/img/Masks-banner-cat.jpg"
+                                        style="width:100%" alt="Masks">
+                                </div>
+                                <figcaption class="caption_type_1 tr_all">
+                                    <div
+                                        class="d_inline_b fw_light caption_title tt_uppercase bg_lbrown_translucent color_white">
+                                        Masks
+                                    </div>
+
+                                </figcaption>
+                            </a>
+                        </div>
+
+
+
+                        <div class="katbox-container scale_image_container mt-5">
+                            <a href="/hats/" class="katbox">
+
+                                <div class="katbox-image">
+                                    <img src="https://cdn02.plentymarkets.com/kz24s2gfphm4/frontend/madworld/img/Hats-banner-cat.jpg"
+                                        style="width:100%" alt="Hats">
+                                </div>
+                                <figcaption class="caption_type_1 tr_all">
+                                    <div
+                                        class="d_inline_b fw_light caption_title tt_uppercase bg_lbrown_translucent color_white">
+                                        Hats
+                                    </div>
+
+                                </figcaption>
+                            </a>
+                        </div>
+
+
+                        <div class="katbox-container scale_image_container mt-5">
+                            <a href="/accessories/" class="katbox">
+
+                                <div class="katbox-image">
+                                    <img src="https://cdn02.plentymarkets.com/kz24s2gfphm4/frontend/madworld/img/Accessories-Banner-cats.jpg"
+                                        style="width:100%" alt="Accessories">
+                                </div>
+                                <figcaption class="caption_type_1 tr_all">
+                                    <div
+                                        class="d_inline_b fw_light caption_title tt_uppercase bg_lbrown_translucent color_white">
+                                        Accessoires
+                                    </div>
+
+                                </figcaption>
+                            </a>
+                        </div>
+
+
+
+                        <div class="katbox-container scale_image_container mt-5">
+                            <a href="/wigs/" class="katbox">
+
+                                <div class="katbox-image">
+                                    <img src="https://cdn02.plentymarkets.com/kz24s2gfphm4/frontend/madworld/img/Wigs-banner-cat.jpg"
+                                        style="width:100%" alt="Wigs">
+                                </div>
+                                <figcaption class="caption_type_1 tr_all">
+                                    <div
+                                        class="d_inline_b fw_light caption_title tt_uppercase bg_lbrown_translucent color_white">
+                                        Wigs
+                                    </div>
+
+                                </figcaption>
+                            </a>
+                        </div>
+
+
+
+
+                        {{ LayoutContainer.show("Ceres::CategoryItem.SideNavBarBottom") }}
+
+
+
+                    </div>
+
+           
+ 
+                <div class="col-12 col-lg-9">
+
+                    <div class="list-controls mb-4">
+                        <div class="list-controls-inner">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="list-wrapper">
+                                        {% include "Ceres::Category.Item.Partials.ItemSorting" with { 'sortingData': searchOptions.sorting, 'selectedSorting': itemSorting } %}
+                    
+                                        {% include "Ceres::Category.Item.Partials.ItemsPerPage" with { 'itemsPerPage': searchOptions.itemsPerPage, 'selectedValue': itemsPerPage } %}
+                    
+                                        {% if overrideSearchFilters | trim is empty %}
+                         
+                                            <div class="mobile-facette-btn">
+                                            <item-filter-list :facet-data="{{ facets | json_encode }}">
+                                                {% if facets | length > 0 %}
+                                                    <a class="btn btn-link filter-toggle">
+                                                        <i class="fa fa-sliders default-float" aria-hidden="true"></i> {{ trans("Ceres::Template.itemFilter") }}
+                                                    </a>
+                                                {% endif %}
+                                            </item-filter-list>
+                                            <item-filter-tag-list></item-filter-tag-list>
+                                        </div>
+                                         
+
+
+                                        <div class="desk-pagination mobile-pagination">
+                                            <div style="padding:10px 10px 0 10px">
+                                            {% include "Ceres::Category.Item.Partials.Pagination" %}
+                                        </div>
+                                    </div>
+                    
+                                        {% else %}
+                                            {{ overrideSearchFilters }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                    
+                    </div>
+                    
+                    
+
+                    
+                    
+                    {% if itemList is not empty %}
+                        <ul class="product-list row grid">
+                            {% for item in itemList %}
+                                <li class="col-12 col-sm-6 col-md-4 col-lg-4">
+                                    <category-item
+                                        item-data-ref="{{ item.data | json_data }}"
+                                        :decimal-count="{{ ceresConfig.item.storeSpecial }}">
+                                        <template #before-prices>{{ LayoutContainer.show("Ceres::CategoryItem.BeforePrices", item.data) }}</template>
+                                        <template #after-prices>{{ LayoutContainer.show("Ceres::CategoryItem.AfterPrices", item.data) }}</template>
+
+                                        <a href="{{ item.data | itemURL }}" class="small">
+                                            <i class="fa fa-image"></i>
+                                            <span>{{ item.data | itemName }}</span>
+                                        </a>
+                                    </category-item>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    {% if category is not defined and itemList is empty %}
+                        <p class="h3 text-muted mb-5 text-center">{{ trans("Ceres::Template.itemSearchNoResults", {"searchString": searchString}) }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if ceresConfig.pagination.position in ['bottom', 'top_bottom'] %}
+                <div class="list-controls mb-5 row">
+                    <div class="col-12">
+                        <div class="float-right">
+                            {% include "Ceres::Category.Item.Partials.Pagination" %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if category is defined %}
+                <div class="col-12">
+                    {% if ceresConfig.item.showCategoryDescriptionBottom in ["description1", "both"] and category.details[0].description | trim is not empty %}
+                        <div class="category-description mb-3">{{ category.details[0].description | raw }}</div>
+                    {% endif %}
+                    {% if ceresConfig.item.showCategoryDescriptionBottom in ["description2", "both"] and category.details[0].description2 | trim is not empty %}
+                        <div class="category-description mb-3">{{ category.details[0].description2 | raw }}</div>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+{% block PartialHead %}
+    {% set canonicalUrl = services.url.getCanonicalURL() %}
+    {% if currentPage - 1 > 0 %}
+        <link rel="prev" href="{{ canonicalUrl ~ queryString({'page': currentPage - 1}) }}" />
+    {% endif %}
+
+    {% if currentPage + 1 <= pageMax %}
+        <link rel="next" href="{{ canonicalUrl ~ queryString({'page': currentPage + 1}) }}" />
+    {% endif %}
+
+    {% if category is not defined %}
+      {% embed getPartial('page-metadata') %}
+              {% block title      trans("Ceres::Template.itemSearchResults") ~ " " ~ searchString %}
+              {% block robots     ceresConfig.meta.robotsSearchResult %}
+      {% endembed %}
+    {% else %}
+      {% embed getPartial('page-metadata') %}
+      {% endembed %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,39 @@
+{
+    "version"           :   "1.0",
+    "name"              :   "MadWorld",
+    "pluginIcon"        :   "icon_plugin_xs.png",
+    "authorIcon"        :   "icon_author_xs.png",
+    "email"             :   "",
+    "phone"             :   "",
+    "description"       :   "MadWorld",
+    "namespace"         :   "MadWorld",
+    "author"            :   "Nick",
+    "type"              :   "theme",
+    "require"           :   {
+                                "Ceres":">= 3.0.0"
+                            },
+    "serviceProvider"   :   "MadWorld\\Providers\\CustomThemeServiceProvider",
+    "dataProviders"     :
+    [
+        {
+            "key"           :"MadWorld\\Containers\\CustomThemeContainer",
+            "name"          :"Stylesheet",
+            "description"   :"Add changes to the CSS file"
+        },
+        {
+            "key"           :"MadWorld\\Containers\\CustomThemeItemListContainer1",
+            "name"          :"First item list",
+            "description"   :"Display a configurable list of items in your online store"
+        },
+        {
+            "key"           :"MadWorld\\Containers\\CustomThemeItemListContainer2",
+            "name"          :"Second item list",
+            "description"   :"Display a configurable list of items in your online store"
+        },
+        {
+            "key"           :"MadWorld\\Containers\\CustomThemeItemListContainer3",
+            "name"          :"Third item list",
+            "description"   :"Display a configurable list of items in your online store"
+        }
+    ]
+}

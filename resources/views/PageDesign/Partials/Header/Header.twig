@@ -1,0 +1,503 @@
+{% import "Ceres::PageDesign.Macros.LayoutContainer" as LayoutContainer %}
+{% import "Ceres::Category.Macros.CategoryTree" as Tree %}
+
+{% set lang = services.localizationRepository.getLanguage() %}
+{% set activeCurrencies = config("Ceres.currency.available_currencies") | split(', ') %}
+{% set enableCurrencySelect = config("Ceres.currency.enable_selection") == "true" and activeCurrencies | length > 0 %}
+{% set currencyFormat = config("Ceres.currency.format") %}
+{% set currencyFormatSelect = config("Ceres.currency.format_selection") %}
+
+{% set headerContainer = LayoutContainer.show("Ceres::Header") | trim %}
+{% if headerContainer is empty %}
+ 
+
+{% set companyLogo  = config("Ceres.header.company_logo") %}
+{% set showHeaderNavBar = config("Ceres.header.show_navbars") %}
+{% set companyName  = trans("Ceres::Template.headerCompanyName") %}
+{% set useMegaMenu  = config("Ceres.header.megamenu_levels") > 1 %}
+
+{% set homepageURL = services.url.getHomepageURL() %}
+
+<!-----------------------HEADER-------------------------------->
+
+ 
+<header id="page-header" class="fixed-top default-header d-print-none">
+    <div id="full-top-bar-2"> 
+        <div class="full-top-bar">
+            <div class="container-max">
+                <div>
+    
+
+    
+
+    
+                    <div class="col-lg-3" style="padding:5px 0 0 0; float:left">
+                        <span class="full-top-bar-txt">
+                    		<a href="https://www.facebook.com/madworldcostumehire/" rel="nofollow"><button type="button" class="btn btn-social-icon btn-facebook"><i class="fa fa-facebook fa-lg" title="Mad World Facebook"></i></button></a>
+							<a href="https://twitter.com/madworld_uk" rel="nofollow"><button type="button" class="btn btn-social-icon btn-twitter"><i class="fa fa-twitter fa-lg" title="Mad World Twitter"></i></button></a>
+							<a href="https://www.instagram.com/madworldlondon/?hl=en" rel="nofollow"><button type="button" class="btn btn-social-icon btn-instagram"><i class="fa fa-instagram fa-lg" title="Mad World Instagram"></i></button></a>
+						</span>
+						</div>
+						<div class="col-lg-6 col-centered" style="text-align: center; padding-top: 4px; float: left;">
+						<a href="https://www.madworldfancydress.com/store-finder/" class="btn btn-primary rounded-lg" role="button">Store Finder</i></a>
+						</div>
+                    <div class="col-lg-3" style="text-align:right; padding-right:0px; float:left" >
+                        <ul id="controlsList" class="controls-list mb-0 d-flex list-inline pl-2 pl-sm-1 pl-md-0">
+
+                            <li class="list-inline-item control-user">
+                        <user-login-handler>
+                            <a class="nav-link" data-toggle="modal">
+                                <i class="fa fa-user mr-0 mr-sm-1" aria-hidden="true"></i>
+                                <span class="d-none d-sm-inline">Log in</span>
+                            </a>
+                            <a class="nav-link" data-toggle="modal">
+                                <i class="fa fa-user-plus mr-0 mr-sm-1" aria-hidden="true"></i>
+                                <span class="d-none d-sm-inline">Register</span>
+                            </a>
+                        </user-login-handler>
+                 
+                     </li>
+
+
+
+
+                    </ul>
+                </div>
+    
+                    <div style="clear:both"></div>
+    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <div class="container-max">
+        <div class="row flex-row-reverse position-relative">
+            <div id="page-header-parent" class="col-12 header-container" data-header-offset>
+                <div class="top-bar header-fw">
+                    <div class="container-max px-0 pr-lg-3">
+                        <div class="row mx-0 flex-row-reverse position-relative">
+        
+                            <div class="top-bar-items mobile-top-bar" >
+                                <div class="controls">
+                                    <ul id="controlsList" class="controls-list mb-0 d-flex list-inline pl-2 pl-sm-1 pl-md-0">
+                                        <li class="list-inline-item control-user">
+                                            <user-login-handler>
+                                                <a class="nav-link" data-toggle="modal">
+                                                    <i class="fa fa-user mr-0 mr-sm-1" aria-hidden="true"></i>
+                                                    <span class="d-none d-sm-inline">{{ trans("Ceres::Template.login") }}</span>
+                                                </a>
+                                                <a class="nav-link" data-toggle="modal">
+                                                    <i class="fa fa-user-plus mr-0 mr-sm-1" aria-hidden="true"></i>
+                                                    <span class="d-none d-sm-inline">{{ trans("Ceres::Template.loginRegister") }}</span>
+                                                </a>
+                                            </user-login-handler>
+                                        </li>
+
+                                             <li class="list-inline-item control-search" style="padding:0 0 0 10px">
+                                            <a class="anicon anicon-search-xcross nav-link"
+                                                aria-label="toggle search"
+                                                data-toggle="collapse"
+                                                href="#searchBox"
+                                                aria-expanded="false"
+                                                aria-controls="searchBox"
+                                                data-parent="#controlsList">
+                                                <span class="anicon-search-item" aria-hidden="true"></span>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item control-wish-list" style="padding:0 15px 0 0">
+                                            <wish-list-count>
+ 
+                                            </wish-list-count>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container-max px-0 px-lg-3">
+                        <div class="row mx-0 flex-row-reverse position-relative">
+                            <div id="searchBox" class="cmp cmp-search-box collapse">
+                                {% set overrideSearchBar = LayoutContainer.show("Ceres::Search.SearchBar") %}
+                                {% if overrideSearchBar | trim is empty %}
+                                    <item-search></item-search>
+                                {% else %}
+                                    {{ overrideSearchBar | raw }}
+                                {% endif %}
+                            </div>
+
+                            {% if enableCurrencySelect == "true" %}
+                                <div id="currencySelect" class="cmp cmp-currency-select collapse">
+                                    <div class="container-max">
+                                        <div class="row py-3">
+                                            <div class="currency-list col-12">
+                                                <div class="list-title">
+                                                    <strong>{{ trans("Ceres::Template.headerCurrency") }}</strong>
+                                                    <hr>
+                                                </div>
+                                                <ul class="row text-center text-sm-left">
+                                                    {% for currency in services.checkout.getCurrencyList() if currency.name in activeCurrencies or activeCurrencies[0] == 'all' or currency.name == services.checkout.getCurrencyData().name %}
+                                                        <li class="col-2 px-0{% if currency.name == services.checkout.getCurrencyData().name %} active{% endif %}">
+                                                            <a class="nav-link" href="{{ queryString({"currency": currency.name}) }}" rel="nofollow">
+                                                                {% if currencyFormatSelect == 'all' %}
+                                                                    {{ currency.name }} <br class="d-block d-sm-none" />({{ currency.symbol }})
+                                                                {% else %}
+                                                                    {{ currency[currencyFormatSelect] }}
+                                                                {% endif %}
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <div id="countrySettings" class="cmp cmp-country-settings collapse">
+                                <div class="container-max">
+                                    <div class="row py-3">
+                                        <div class="col-12 col-lg-6">
+
+                                            <div class="language-settings">
+                                                <div class="list-title">
+                                                    <strong>{{ trans("Ceres::Template.headerSelectLanguage") }}</strong>
+                                                    <hr>
+                                                </div>
+
+                                                {% set languageList = services.webstoreConfigurationRepository.getActiveLanguageList() %}
+                                                {% set languageUrls = services.url.getLanguageURLs() %}
+                                                <ul class="row">
+                                                    {% for language in languageList %}
+                                                        <li class="col-6 col-sm-4 px-0{% if lang == language %} active{% endif %}">
+                                                            <a class="nav-link" href="{% if languageUrls[language] is defined %}{{ languageUrls[language] ~ queryString() }}{% elseif language != defaultLanguage %}/{{ language }}{{ urls.trailingSlashSuffix }}{% else %}/{% endif %}" data-update-url>
+                                                                <i class="flag-icon flag-icon-{{ language }}"></i>
+                                                                {{ trans("Ceres::Template.header" ~ language | capitalize) }}
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <div class="shipping-settings">
+                                                <div class="list-title">
+                                                    <strong>{{ trans("Ceres::Template.headerSelectShippingCountry") }}</strong>
+                                                    <hr>
+                                                </div>
+                                                <shipping-country-select :disable-input="{{ services.template.isCheckout() | json_encode() }}"></shipping-country-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        
+<!-----------------------NAVIGATION-------------------------------->
+
+
+<nav class="navbar header-fw p-0 megamenu mobile-menu-border" id="header-border" style="background:#fff">
+    <div class="container-max d-block">
+        <div class="row">
+
+
+            <div class="col-xs-12 col-lg-2" style="float:left">
+                <div class="logo-mobile">
+                    <div class="logo-top-pad" id="padding-col-1">
+                        <a href="/">
+                            <img src="https://cdn02.plentymarkets.com/kz24s2gfphm4/frontend/madworld/img/logo.png" class="logo-top" id="logo-size" alt="Mad World Fancy Dress Hire" >
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-xs-12 col-lg-8 hb-1" style="float:left">
+                <div class="row">
+
+                    <div class="col-xs-12 col-lg-12 hb-1-2"
+                        id="padding-col-3">
+
+
+
+                        <item-search></item-search>
+
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="col-xs-12 col-lg-2 hb-1">
+
+                
+                <div style="float:right; padding-left:10px" class="cart-full">
+                    <div @mouseover.once="$store.dispatch('loadComponent', 'basket-preview')" class="cart-full" style="padding:0 10px 0 0">
+                        <a v-toggle-basket-preview href="#" class="toggle-basket-preview nav-link">
+                           
+                                <span class="badge-top-2" v-basket-item-quantity="$store.state.basket.data.itemQuantity">0</span>
+                           
+
+                                <i v-waiting-animation="$store.state.basket.isBasketLoading" waiting-class="fas fa-shopping-basket" class="fas fa-shopping-basket" aria-hidden="true" style="font-size:32px; color:#222226"></i>
+
+                        </a>
+
+                        <lazy-load component="basket-preview">
+                            <basket-preview :show-net-prices="false">
+                                <template #before-basket-item>
+                                                        
+                                </template>
+                                <template #after-basket-item>
+                                                        
+                                </template>
+                                <template #before-basket-totals>
+                                                        
+                                </template>
+                                <template #before-item-sum>
+                                                        
+                                </template>
+                                <template #after-item-sum>
+                                                        
+                                </template>
+                                <template #before-shipping-costs>
+                                                        
+                                </template>
+                                <template #after-shipping-costs>
+                                                        
+                                </template>
+                                <template #before-total-sum>
+                                                        
+                                </template>
+                                <template #before-vat>
+                                                        
+                                </template>
+                                <template #after-vat>
+                                                        
+                                </template>
+                                <template #after-total-sum>
+                                                        
+                                </template>
+                                <template #after-basket-totals>
+                                                        
+                                </template>
+                                <template #before-checkout-button>
+                                                        
+                                </template>
+                                <template #after-checkout-button>
+                                                        
+                                </template>
+                            </basket-preview>
+                        </lazy-load>
+                    </div>
+
+                    </div>
+
+
+                    <div style="float:right">
+                        <wish-list-count>
+                        </wish-list-count>
+                    </div>
+
+                    </div>
+
+
+            <div @mouseover.once="$store.dispatch('loadComponent', 'basket-preview')" class="cart-mobile" style="padding:0 12px 0 0">
+                <a v-toggle-basket-preview href="#" class="toggle-basket-preview nav-link">
+                   
+                        <span class="badge-top-mobile-2" v-basket-item-quantity="$store.state.basket.data.itemQuantity">0</span>
+                   
+
+                        <i v-waiting-animation="$store.state.basket.isBasketLoading" waiting-class="fas fa-shopping-basket" class="fas fa-shopping-basket" aria-hidden="true" style="font-size:30px; color:#222226"></i>
+
+                </a>
+
+                <lazy-load component="basket-preview">
+                    <basket-preview :show-net-prices="false">
+                        <template #before-basket-item>
+                                                
+                        </template>
+                        <template #after-basket-item>
+                                                
+                        </template>
+                        <template #before-basket-totals>
+                                                
+                        </template>
+                        <template #before-item-sum>
+                                                
+                        </template>
+                        <template #after-item-sum>
+                                                
+                        </template>
+                        <template #before-shipping-costs>
+                                                
+                        </template>
+                        <template #after-shipping-costs>
+                                                
+                        </template>
+                        <template #before-total-sum>
+                                                
+                        </template>
+                        <template #before-vat>
+                                                
+                        </template>
+                        <template #after-vat>
+                                                
+                        </template>
+                        <template #after-total-sum>
+                                                
+                        </template>
+                        <template #after-basket-totals>
+                                                
+                        </template>
+                        <template #before-checkout-button>
+                                                
+                        </template>
+                        <template #after-checkout-button>
+                                                
+                        </template>
+                    </basket-preview>
+                </lazy-load>
+            </div>
+
+             <button v-open-mobile-navigation class="navbar-toggler-2 d-lg-none p-3" type="button">
+                &#9776;
+            </button>
+
+
+        </div>
+    </div>
+
+
+
+    <div class="container-max">
+
+
+        <div class="main-navbar-collapsable d-none d-lg-block" style="border-top:1px solid #000">
+                                                   
+            {% if showHeaderNavBar == "top" or showHeaderNavBar == "both" or not services.template.isCategory() %}
+   
+            <ul class="mainmenu p-0 m-0 d-flex nav-menu position-relative" style="border-bottom:1px solid #dee2e6">
+                {{ Tree.get_nav_bar(
+                    categories,
+                    "",
+                    ceresConfig.header.megamenuLevels,
+                    {
+                        "1": ceresConfig.header.megamenuItemsStage1,
+                        "2": ceresConfig.header.megamenuItemsStage2,
+                        "3": ceresConfig.header.megamenuItemsStage3
+                    }
+                ) }}
+            </ul>
+
+
+
+
+            {% endif %}
+        
+         </div>
+
+
+</div>
+
+    
+</nav>
+
+<!-----------------------NAVIGATION-------------------------------->
+
+
+</div>
+</div>
+</div>
+</header>
+
+
+<!-----------------------HEADER-------------------------------->
+
+
+
+
+
+                {% if not services.template.isHome() and not services.template.isMyAccount() and not services.template.isCheckout() %}
+                 
+                <!-----------------------BREADCRUMB-------------------------------->
+              
+                
+                <!-----------------------BREADCRUMB-------------------------------->
+
+                {% endif %}
+
+
+
+{% else %}
+<header id="page-header" class="fixed-top">
+    <div class="container-max">
+        <div class="row flex-row-reverse position-relative">
+            <div id="page-header-parent" class="col-12 header-container" data-header-offset>
+                {{ headerContainer | raw }}
+            </div>
+        </div>
+    </div>
+</header>
+{% endif %}
+
+{% set scriptId = uid() %}
+<script id="{{ scriptId }}">
+    var vueApp = document.getElementById("vue-app");
+    var pageHeader = document.getElementById("page-header");
+
+    if ( !!vueApp && !!pageHeader )
+    {
+        vueApp.style.marginTop = (pageHeader.getBoundingClientRect().height - 70) + 'px';
+    }
+
+    var scriptElement = document.getElementById("{{ scriptId }}");
+    scriptElement.parentElement.removeChild(scriptElement);
+</script>
+
+<div>
+    {% if category.linklist == "Y" %}
+        {% set initialCategory = { id: category.id } %}
+    {% else %}
+        {% set initialCategory = category %}
+    {% endif %}
+
+    {# set the initialCategory to the default category of the current item #}
+    {% if services.template.isCurrentTemplate("tpl.item") and defaultCategory is not null %}
+        {% set initialCategory = defaultCategory %}
+    {% elseif services.template.isCurrentTemplate('tpl.home.category') %}
+        {% set initialCategory = null %}
+    {% endif %}
+
+    <mobile-navigation :initial-category="{{ initialCategory | json_encode }}" :include-language="{{ urls.includeLanguage | json_encode }}"></mobile-navigation>
+</div>
+
+
+            <script>
+                window.onscroll = function () { scrollFunction() };
+
+                function scrollFunction() {
+                    if (document.body.scrollTop > 0 || document.documentElement.scrollTop > 50) {
+                        document.getElementById("full-top-bar-2").style.display = "none";
+                        document.getElementById("logo-size").style.width = "80px";
+
+                    } else {
+                        document.getElementById("full-top-bar-2").style.display = "block";
+                        document.getElementById("logo-size").style.width = "120px";
+                    }
+                }
+            </script>
+            
+    
